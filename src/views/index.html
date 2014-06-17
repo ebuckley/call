@@ -1,0 +1,31 @@
+<html ng-app="cl">
+<head>
+	<title>Call</title>
+	<!-- Latest compiled and minified CSS & JS -->
+	<link rel="stylesheet" media="screen" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.9/angular.min.js"></script>
+	<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+	<script type="text/javascript" src="/javascripts/main.js"></script>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
+</head>
+<body>
+	<div class="container-fluid" ng-controller="pageCtrl">
+		<div class="row">
+			<div class="col-md-6 col-lg-6 col-sm-12">
+				<cl-title content="Not Here" buttonbar="buttonbar"></cl-title>
+				<people-collection source="people" filter="{isHere: false}">
+				</people-collection>
+			</div>
+			<div class="col-md-6 col-lg-6 col-sm-12">
+				<cl-title content="Here" buttonbar="buttonbar" ></cl-title>
+				<people-collection source="people" filter="{isHere: true}">
+				</people-collection>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

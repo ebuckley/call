@@ -1,0 +1,17 @@
+{
+  "name": "call",
+  "description": "This is an example service using this template will make life easier when it comes to review and deployment.",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "socket.io": "^1.0.4",
+    "express": "^4.4.3",
+    "errorhandler": "^1.1.0",
+    "ejs": "^1.0.0",
+    "body-parser": "^1.3.1",
+    "underscore": "^1.6.0"
+  }
+}

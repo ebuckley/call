@@ -1,0 +1,9 @@
+<div class="list-group">
+	<a 
+		class="list-group-item"
+		ng-repeat="item in collection | filter: collectionFilter"
+		href="" 
+		ng-click="item.isHere = !item.isHere">
+		{{item.name}}
+	</a>
+</div>
