@@ -72,13 +72,15 @@ var people = [];
 
 //socketio
 io.on('connection', function(socket){
-  console.log('a user connected', socket.client.id);
-  socket.emit('updatePeopleFromServer', people);
-  socket.on('updatePeopleFromClient', function (data) {
-  	people = data;
-  	io.emit('updatePeopleFromServer', data);
-  });
-  socket.on('disconnect', function () {
-  	console.log('disconnect', socket.client.id);
-  });
+	console.log('a user connected', socket.client.id);
+	socket.emit('updatePeopleFromServer', people);
+	
+	socket.on('updatePeopleFromClient', function (data) {
+		people = data;
+		io.emit('updatePeopleFromServer', data);
+	});
+
+	socket.on('disconnect', function () {
+		console.log('disconnect', socket.client.id);
+	});
 });

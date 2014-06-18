@@ -1,13 +1,5 @@
 angular.module('cl', [])
 .controller('pageCtrl', function ($scope, peopleFactory) {
-	$scope.dunno = function () {
-		clSocket.emit('update', $scope.people);
-		console.log(_.now(), 'dunno called');
-	};
-
-	$scope.call = function () {
-		// QUE?
-	};
 
 	$scope.buttonbar = {
 		shuffle: function () {
@@ -25,6 +17,7 @@ angular.module('cl', [])
 	$scope.$watch('people', function (newPeople) {
 		$scope.peopleUpdater.update(newPeople);
 	}, true);
+	
 	$scope.peopleUpdater = 	peopleFactory.create({
 		serverUpdated: function (data) {
 			$scope.people = data.people;

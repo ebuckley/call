@@ -29,6 +29,6 @@ div.title {
 	position: absolute;
 	width:100px;
 	height:100px;
-	right:0px;
+	right: -30px;
 	top: 10px;
 }
