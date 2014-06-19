@@ -14,10 +14,6 @@ angular.module('cl', [])
 		$scope.peopleUpdater.update($scope.people);
 	};
 
-	$scope.$watch('people', function (newPeople) {
-		$scope.peopleUpdater.update(newPeople);
-	}, true);
-	
 	$scope.peopleUpdater = 	peopleFactory.create({
 		serverUpdated: function (data) {
 			$scope.people = data.people;
