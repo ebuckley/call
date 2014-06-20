@@ -34,7 +34,7 @@ angular.module('cl', [])
 	var peopleFactory = {};
 
 	peopleFactory.create = function (userOpts) {
-		opts = {
+		var opts = {
 			serverUpdated: function () {
 				console.log('when creating a people object you should implement iUpdateFromServer!');
 			}
