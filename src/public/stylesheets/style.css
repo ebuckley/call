@@ -12,7 +12,7 @@ div.title {
 }
 .title p {
 	font-size: 3.5em;
-	font-family: "HelveticaNeue-Light", "Helvetica Neue Light";
+	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", Helvetica, Arial, sans-serif;
 	font-weight: 100;
 }
 
