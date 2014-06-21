@@ -9,9 +9,12 @@ angular.module('cl', [])
 		}
 	};
 
-	$scope.change = function (person) {
-		person.isHere = !person.isHere;
-		$scope.peopleUpdater.update($scope.people);
+	$scope.peopleCommands = {
+		clickItem: function (person) {
+			console.log('click', person);
+			person.isHere = !person.isHere;
+			$scope.peopleUpdater.update($scope.people);
+		}
 	};
 
 	$scope.peopleUpdater = 	peopleFactory.create({
@@ -85,6 +88,7 @@ angular.module('cl', [])
 		restrict: 'E',
 		templateUrl: '/templates/listgroup.html',
 		scope: {
+			commands: '=commands',
 			collection: '=source',
 			collectionFilter: '=filter'
 		}

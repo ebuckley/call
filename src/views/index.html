@@ -16,12 +16,18 @@
 		<div class="row">
 			<div class="col-md-6 col-lg-6 col-sm-12">
 				<cl-title content="Not Here" buttonbar="buttonbar"></cl-title>
-				<people-collection source="people" filter="{isHere: false}">
+				<people-collection
+					commands="peopleCommands"
+					source="people"
+					filter="{isHere: false}">
 				</people-collection>
 			</div>
 			<div class="col-md-6 col-lg-6 col-sm-12">
 				<cl-title content="Here" buttonbar="buttonbar" ></cl-title>
-				<people-collection source="people" filter="{isHere: true}">
+				<people-collection
+					commands="peopleCommands"
+					source="people"
+					filter="{isHere: true}">
 				</people-collection>
 			</div>
 		</div>
