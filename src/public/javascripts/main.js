@@ -37,6 +37,7 @@ angular.module('cl')
 				var updater = $scope.peopleUpdater;
 				$modal.open({
 					templateUrl: '/templates/clAddPeople.html',
+					size: 'lg',
 					controller: function ($scope) {
 						$scope.peopleModel = _.clone(updater.get());
 					}
