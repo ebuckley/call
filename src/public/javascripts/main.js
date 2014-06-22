@@ -32,7 +32,7 @@ angular.module('cl')
 			click: shufflePeople
 		},
 		{
-			name: 'Add',
+			name: 'Update',
 			click: function () {
 				var updater = $scope.peopleUpdater;
 				$modal.open({
@@ -191,6 +191,9 @@ angular.module('cl')
 		templateUrl: '/templates/clNav.html',
 		scope: {
 			model: '='
+		},
+		link: function (scope, el) {
+			scope.isHidden = false;
 		}
 	};
 });

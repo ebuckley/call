@@ -48,3 +48,17 @@ div.title {
 .add-people-modal textarea {
 	margin-bottom: 10px;
 }
+
+@media all and (min-width: 769px) {
+	.nav-items-mobile {
+		display: none;
+		background: #f00;
+	}
+}
+
+@media all and (max-width: 769px) {
+	.nav-items {
+		display: none;
+		background: #00f
+	}
+}
