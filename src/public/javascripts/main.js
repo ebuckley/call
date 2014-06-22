@@ -1,7 +1,7 @@
 angular.module('cl', []);
 
 angular.module('cl')
-.controller('pageCtrl', function ($scope, socketCollection, listGroupFactory) {
+.controller('pageCtrl', function ($scope, socketCollection ) {
 
 	
 	//todo reconsider naming
@@ -17,6 +17,14 @@ angular.module('cl')
 		$scope.peopleUpdater.update($scope.model.people);
 	}
 
+	/**
+	 * change a person to be here if not here, or vice versa.
+	 */
+	var toggleIsHere = function (person) {
+		person.isHere = !person.isHere;
+		$scope.peopleUpdater.update($scope.model.people);
+	};
+
 	//create nav model
 	$scope.navObject = {};
 	$scope.navObject.links = [
@@ -30,8 +38,6 @@ angular.module('cl')
 		}
 	];
 
-
-
 	// setup the server socket.io collection
 	$scope.peopleUpdater = 	socketCollection.create({
 		serverUpdated: function (data) {
@@ -39,14 +45,10 @@ angular.module('cl')
 		},
 	});
 
-	var changePerson = function (person) {
-		person.isHere = !person.isHere;
-		$scope.peopleUpdater.update($scope.model.people);
-	};
-
+	
 	//setup the 2 listgroups of people
 	$scope.herePeople = {
-		clickItem: changePerson,
+		clickItem: toggleIsHere,
 		title: 'Here',
 		filter: function (item) {
 			return item.isHere;
@@ -55,7 +57,7 @@ angular.module('cl')
 	};
 
 	$scope.notHerePeople = {
-		clickItem: changePerson,
+		clickItem: toggleIsHere,
 		title: 'Not Here',
 		filter: function (item) {
 			return !item.isHere;
