@@ -1,10 +1,9 @@
-angular.module('cl', []);
+angular.module('cl', ['ui.bootstrap']);
 
 angular.module('cl')
-.controller('pageCtrl', function ($scope, socketCollection ) {
+.controller('pageCtrl', function ($scope, $modal, socketCollection ) {
 
 	
-	//todo reconsider naming
 	$scope.model = {};
 	$scope.model.people = [];
 
@@ -34,7 +33,17 @@ angular.module('cl')
 		},
 		{
 			name: 'Add',
-			click: shufflePeople
+			click: function () {
+				var updater = $scope.peopleUpdater;
+				$modal.open({
+					templateUrl: '/templates/clAddPeople.html',
+					controller: function ($scope) {
+						$scope.peopleModel = _.clone(updater.get());
+					}
+				}).result.then(function(data) {
+					$scope.peopleUpdater.update(data);
+				});
+			}
 		}
 	];
 
@@ -128,7 +137,47 @@ angular.module('cl')
 		});
 	};
 	return clSocket;
-}).directive('clListgroup', function () {
+})
+.directive('clJson', function ($filter) {
+	return {
+		restrict: 'E',
+		template: '<textarea ng-model="view" class="form-control"></textarea>',
+		require: '?ngModel',
+		link: function (scope, el, attr, ngModel) {
+			if (!ngModel) return;
+			ngModel.$render = function () {
+				scope.view = $filter('json')(ngModel.$viewValue);
+				//resize textbox
+				_.defer(updateSize);
+			};
+
+			scope.errors = [];
+
+			var updateSize = function () {
+				var textbox = el.find('textarea');
+				textbox.css('height', '1px');
+				textbox.css('height', 10 + textbox[0].scrollHeight + 'px');
+			};
+			el.on('blur keyup change', function () {
+				scope.$apply(read);
+			});
+
+			function read() {
+				try {
+					ngModel.$setViewValue(JSON.parse(scope.view));
+					if (el.hasClass('has-error')) {
+						el.removeClass('has-error');
+					}
+				} catch (e) {
+					if ( !el.hasClass('has-error')) {
+						el.addClass('has-error');
+					}
+				}
+			}
+		}
+	};
+})
+.directive('clListgroup', function () {
 	return {
 		restrict: 'E',
 		templateUrl: '/templates/listgroup.html',

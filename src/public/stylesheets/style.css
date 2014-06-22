@@ -40,3 +40,11 @@ div.title {
 .list-heading {
 	background-color: #f5f5f5;
 }
+
+.add-people-modal {
+	padding: 6px;
+}
+
+.add-people-modal textarea {
+	margin-bottom: 10px;
+}

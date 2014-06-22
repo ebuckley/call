@@ -1,0 +1,20 @@
+<div class='container-fluid add-people-modal'>
+	<div class="row">
+		<div class="col-md-12 form-group">
+			<h3>Update People</h3>
+			<cl-json ng-model='peopleModel'></cl-json>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class='pull-right'>
+				<a href="#" class='btn btn-primary btn-lg' ng-click="$close(peopleModel)">
+					Add
+				</a>
+				<a href="#" class='btn btn-warning btn-lg' ng-click="$dismiss('peopleModel')">
+					Cancel
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
