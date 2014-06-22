@@ -1,30 +1,70 @@
-angular.module('cl', [])
-.controller('pageCtrl', function ($scope, peopleFactory) {
+angular.module('cl', []);
 
-	$scope.buttonbar = {
-		shuffle: function () {
-			console.log('shuffling $scope.people');
-			$scope.people = _.shuffle($scope.people);
-			$scope.peopleUpdater.update($scope.people);
+angular.module('cl')
+.controller('pageCtrl', function ($scope, socketCollection, listGroupFactory) {
+
+	
+	//todo reconsider naming
+	$scope.model = {};
+	$scope.model.people = [];
+
+	/**
+	 * shuffle people
+	 * Causes side effects on scope
+	 */
+	function shufflePeople() {
+		$scope.model.people = _.shuffle($scope.model.people);
+		$scope.peopleUpdater.update($scope.model.people);
+	}
+
+	//create nav model
+	$scope.navObject = {};
+	$scope.navObject.links = [
+		{
+			name: 'Shuffle',
+			click: shufflePeople
+		},
+		{
+			name: 'Add',
+			click: shufflePeople
 		}
-	};
+	];
 
-	$scope.peopleCommands = {
-		clickItem: function (person) {
-			console.log('click', person);
-			person.isHere = !person.isHere;
-			$scope.peopleUpdater.update($scope.people);
-		}
-	};
 
-	$scope.peopleUpdater = 	peopleFactory.create({
+
+	// setup the server socket.io collection
+	$scope.peopleUpdater = 	socketCollection.create({
 		serverUpdated: function (data) {
-			$scope.people = data.people;
+			$scope.model.people = data.people;
 		},
 	});
 
+	var changePerson = function (person) {
+		person.isHere = !person.isHere;
+		$scope.peopleUpdater.update($scope.model.people);
+	};
+
+	//setup the 2 listgroups of people
+	$scope.herePeople = {
+		clickItem: changePerson,
+		title: 'Here',
+		filter: function (item) {
+			return item.isHere;
+		},
+		updater: $scope.peopleUpdater
+	};
+
+	$scope.notHerePeople = {
+		clickItem: changePerson,
+		title: 'Not Here',
+		filter: function (item) {
+			return !item.isHere;
+		},
+		updater: $scope.peopleUpdater
+	};
 })
-.factory('peopleFactory', function (clSocket ){
+//TODO REFACTOR INTERNAL NAMING
+.factory('socketCollection', function (clSocket ){
 	var server = {
 		people: [],
 		lastUpdate: 'never'
@@ -34,9 +74,9 @@ angular.module('cl', [])
 	 * updateFromServerInterface
 	 *   - serverUpdated(data)
 	 */
-	var peopleFactory = {};
+	var socketCollection = {};
 
-	peopleFactory.create = function (userOpts) {
+	socketCollection.create = function (userOpts) {
 		var opts = {
 			serverUpdated: function () {
 				console.log('when creating a people object you should implement iUpdateFromServer!');
@@ -45,7 +85,10 @@ angular.module('cl', [])
 		_.extend(opts, userOpts);
 
 		//People Updater class
-		function PeopleUpdater() {
+		function SocketUpdater() {
+			this.get = function () {
+				return server.people;
+			};
 			this.serverUpdated = opts.serverUpdated;
 			this.update = function (newPeople) {
 				if (angular.isDefined(newPeople)) {
@@ -54,7 +97,7 @@ angular.module('cl', [])
 			};
 		}
 
-		var instance = new PeopleUpdater();
+		var instance = new SocketUpdater();
 		clSocket.on('updatePeopleFromServer', function(data) {
 			server.people = data;
 			server.lastUpdate = Date.now();
@@ -62,7 +105,7 @@ angular.module('cl', [])
 		});
 		return instance;
 	};
-	return peopleFactory;
+	return socketCollection;
 })
 .factory('clSocket', function ($rootScope) {
 	//should be loaded in provider for config stage
@@ -83,35 +126,20 @@ angular.module('cl', [])
 		});
 	};
 	return clSocket;
-}).directive('peopleCollection', function () {
+}).directive('clListgroup', function () {
 	return {
 		restrict: 'E',
 		templateUrl: '/templates/listgroup.html',
 		scope: {
-			commands: '=commands',
-			collection: '=source',
-			collectionFilter: '=filter'
-		}
+			model: '=',
+		},
 	};
-}).directive('clTitle', function () {
+}).directive('clNav', function () {
 	return {
 		restrict: 'E',
-		templateUrl: '/templates/clTitle.html',
+		templateUrl: '/templates/clNav.html',
 		scope: {
-			buttonbar: '='
-		},
-		link: function (scope, el, attr) {
-			scope.content = attr.content;
-			var shuffleButton = el.find('.shuffle-btn');
-			shuffleButton.hide();
-
-			el.bind('mouseleave', function () {
-				shuffleButton.fadeOut();
-			});
-
-			el.bind('mouseenter',  function () {
-				shuffleButton.fadeIn();
-			});
+			model: '='
 		}
 	};
 });

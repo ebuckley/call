@@ -32,3 +32,11 @@ div.title {
 	right: -30px;
 	top: 10px;
 }
+
+.page-content {
+	padding-top: 40px;
+}
+
+.list-heading {
+	background-color: #f5f5f5;
+}

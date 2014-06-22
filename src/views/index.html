@@ -11,24 +11,17 @@
 	<script type="text/javascript" src="/javascripts/main.js"></script>
 	<link rel="stylesheet" type="text/css" href="/stylesheets/style.css">
 </head>
-<body>
-	<div class="container-fluid" ng-controller="pageCtrl">
+<body ng-controller="pageCtrl">
+	<cl-nav model="navObject"></cl-nav>
+	<div class="container-fluid page-content" >
 		<div class="row">
 			<div class="col-md-6 col-lg-6 col-sm-12">
-				<cl-title content="Not Here" buttonbar="buttonbar"></cl-title>
-				<people-collection
-					commands="peopleCommands"
-					source="people"
-					filter="{isHere: false}">
-				</people-collection>
+				<cl-listgroup model="notHerePeople">
+				</cl-listgroup>
 			</div>
 			<div class="col-md-6 col-lg-6 col-sm-12">
-				<cl-title content="Here" buttonbar="buttonbar" ></cl-title>
-				<people-collection
-					commands="peopleCommands"
-					source="people"
-					filter="{isHere: true}">
-				</people-collection>
+				<cl-listgroup model="herePeople">
+				</cl-listgroup>
 			</div>
 		</div>
 	</div>

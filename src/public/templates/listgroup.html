@@ -1,9 +1,12 @@
 <div class="list-group">
+	<div class="list-group-item list-heading">
+		<h3 class='panel-title'>{{model.title}}</h3>
+	</div>
 	<a 
 		class="list-group-item"
-		ng-repeat="item in collection | filter: collectionFilter"
+		ng-repeat="item in model.updater.get() | filter: model.filter"
 		href="" 
-		ng-click="commands.clickItem(item)">
+		ng-click="model.clickItem(item)">
 		{{item.name}}
 	</a>
 </div>
