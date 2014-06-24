@@ -3,7 +3,6 @@ angular.module('cl', ['ui.bootstrap']);
 angular.module('cl')
 .controller('pageCtrl', function ($scope, $modal, socketCollection ) {
 
-	
 	$scope.model = {};
 	$scope.model.people = [];
 
@@ -26,6 +25,7 @@ angular.module('cl')
 
 	//create nav model
 	$scope.navObject = {};
+
 	$scope.navObject.links = [
 		{
 			name: 'Shuffle',
@@ -193,7 +193,7 @@ angular.module('cl')
 		scope: {
 			model: '='
 		},
-		link: function (scope, el) {
+		link: function (scope) {
 			scope.isHidden = false;
 		}
 	};
