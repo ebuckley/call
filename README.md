@@ -3,10 +3,10 @@ See who is in the call
 
 ## Getting Started
 
-- Install grunt globally `sudo npm  install -g grunt grunt-cli`
 - Install local packages `npm install`
 - `cd src/ && node app`
 - In your browser go to `http://localhost:3000`
+
 
 ## Adding people
 simply `POST` to  `http://localhost:3000/people` with something like this in the 
