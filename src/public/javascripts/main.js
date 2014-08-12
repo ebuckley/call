@@ -1,4 +1,4 @@
-angular.module('cl', ['ui.bootstrap']);
+angular.module('cl', ['ui.bootstrap', 'eb.util']);
 
 angular.module('cl')
 .controller('pageCtrl', function ($scope, $modal, socketCollection ) {
@@ -45,6 +45,17 @@ angular.module('cl')
 					$scope.peopleUpdater.update(data);
 				});
 			}
+		},
+		{
+			name: 'Reset',
+			click: function () {
+				var updater = $scope.peopleUpdater;
+				var resetPeople = _.map($scope.model.people, function (item) {
+					item.isHere = false;
+					return item;
+				});
+				$scope.peopleUpdater.update();
+			}
 		}
 	];
 
@@ -76,7 +87,7 @@ angular.module('cl')
 	};
 })
 //TODO REFACTOR INTERNAL NAMING
-.factory('socketCollection', function (clSocket ){
+.factory('socketCollection', function (socket ){
 	var server = {
 		people: [],
 		lastUpdate: 'never'
@@ -104,13 +115,13 @@ angular.module('cl')
 			this.serverUpdated = opts.serverUpdated;
 			this.update = function (newPeople) {
 				if (angular.isDefined(newPeople)) {
-					clSocket.emit('updatePeopleFromClient', JSON.parse(angular.toJson(newPeople)));
+					socket.emit('updatePeopleFromClient', JSON.parse(angular.toJson(newPeople)));
 				}
 			};
 		}
 
 		var instance = new SocketUpdater();
-		clSocket.on('updatePeopleFromServer', function(data) {
+		socket.on('updatePeopleFromServer', function(data) {
 			server.people = data;
 			server.lastUpdate = Date.now();
 			instance.serverUpdated(server);
@@ -118,26 +129,6 @@ angular.module('cl')
 		return instance;
 	};
 	return socketCollection;
-})
-.factory('clSocket', function ($rootScope) {
-	//should be loaded in provider for config stage
-	var socket = io(),
-		clSocket = {};
-
-	clSocket.emit = function (key, value) {
-		console.log(_.now(), 'emiting', key, value);
-		socket.emit(key, value);
-	};
-
-	clSocket.on = function (key, cb) {
-		socket.on(key, function (data) {
-			$rootScope.$apply(function () {
-				console.log(_.now(), 'handling', key, data);
-				cb(data);
-			});
-		});
-	};
-	return clSocket;
 })
 .directive('clJson', function ($filter) {
 	return {
@@ -197,4 +188,26 @@ angular.module('cl')
 			scope.isHidden = false;
 		}
 	};
+});
+
+angular.module('eb.util', [])
+.factory('socket', function ($rootScope) {
+	//should be loaded in provider for config stage
+	var socket = io(),
+		socketObj = {};
+
+	socketObj.emit = function (key, value) {
+		console.log(_.now(), 'emiting', key, value);
+		socket.emit(key, value);
+	};
+
+	socketObj.on = function (key, cb) {
+		socket.on(key, function (data) {
+			$rootScope.$apply(function () {
+				console.log(_.now(), 'handling', key, data);
+				cb(data);
+			});
+		});
+	};
+	return socketObj;
 });

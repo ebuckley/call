@@ -33,9 +33,6 @@ a.get('/', function(req, res) {
 	res.render('index.html');
 });
 
-//todo
-// * add
-// * remove
 a.get('/people', function (req, res) {
 	res.send(people);
 });
